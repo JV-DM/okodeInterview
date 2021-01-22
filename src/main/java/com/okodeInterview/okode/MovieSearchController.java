@@ -21,12 +21,12 @@ public class MovieSearchController {
     @RequestMapping(method = RequestMethod.GET)
     public Movie[] getMovies(@RequestParam("title") String title) {
         Movie[] movies = null;
-        String requestUrl = defaultUrl;
+        String requestUrl = "";
         RestTemplate restTemplate = new RestTemplate();
         int pages = 1; //minimum amount of pages we will iterate through
 
-        if(title != null && !title.isEmpty())
-             requestUrl = searchUrl + title.trim();
+        if (title != null && !title.isEmpty())
+            requestUrl = searchUrl + title.trim();
         else
             return null;
 
