@@ -15,17 +15,25 @@ import java.util.Arrays;
 @RequestMapping("/movies")
 public class MovieSearchController {
 
-    private static String url = "https://api.themoviedb.org/3/search/movie?api_key=8f27b7eaf57c01db15a6ca4b6b11f9a1&query=";
+    private static String defaultUrl = "https://api.themoviedb.org/3/";
+    private static String searchUrl = defaultUrl + "search/movie?api_key=8f27b7eaf57c01db15a6ca4b6b11f9a1&query=";
 
     @RequestMapping(method = RequestMethod.GET)
     public Movie[] getMovies(@RequestParam("title") String title) {
         Movie[] movies = null;
-        String requestUrl = url + title.trim();
+        String requestUrl = defaultUrl;
         RestTemplate restTemplate = new RestTemplate();
         int pages = 1; //minimum amount of pages we will iterate through
+
+        if(title != null && !title.isEmpty())
+             requestUrl = searchUrl + title.trim();
+        else
+            return null;
+
         for (int i = 1; i <= pages; i++) {
             Result response
                     = restTemplate.getForObject(requestUrl, Result.class);
+
             if (movies == null)
                 movies = response.getResults();
             else {
